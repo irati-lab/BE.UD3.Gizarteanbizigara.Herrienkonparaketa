@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="eu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UD3: Gizarte Ereduak eta Matrizea</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .tab-btn.active {
+            background-color: #2563eb;
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .main-tab.active {
+            border-bottom: 3px solid #2563eb;
+            color: #2563eb;
+        }
+        .progress-bar { transition: width 1s ease-in-out; }
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        /* Scroll horizontal leuna */
+        .overflow-x-auto { scrollbar-width: thin; scrollbar-color: #cbd5e1 #f1f5f9; }
+        .overflow-x-auto::-webkit-scrollbar { height: 8px; }
+        .overflow-x-auto::-webkit-scrollbar-track { background: #f1f5f9; }
+        .overflow-x-auto::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 4px; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen">
+
+    <!-- TOP HEADER -->
+    <header class="bg-white shadow-sm border-b sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-4">
+                    <span class="px-2 py-1 bg-slate-900 text-white text-xs font-bold rounded uppercase tracking-wider">UD3</span>
+                    <h1 class="text-xl font-bold text-slate-900 hidden md:block">Gizartean Bizi Gara</h1>
+                </div>
+                
+                <!-- Main Navigation Switches -->
+                <div class="flex space-x-8">
+                    <button onclick="switchMainView('cards')" id="btn-view-cards" class="main-tab active flex items-center gap-2 px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-slate-500 hover:text-slate-700 hover:border-slate-300 transition-colors h-16">
+                        <i data-lucide="presentation" class="w-4 h-4"></i>
+                        Azalpen Interaktiboa
+                    </button>
+                    <button onclick="switchMainView('matrix')" id="btn-view-matrix" class="main-tab flex items-center gap-2 px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-slate-500 hover:text-slate-700 hover:border-slate-300 transition-colors h-16">
+                        <i data-lucide="table-2" class="w-4 h-4"></i>
+                        Matrize Laburpena
+                    </button>
+                </div>
+                
+                <div class="text-sm text-slate-400 hidden md:block font-medium">
+                    &copy; Xanti
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- VIEW 1: CARDS INTERACTIVE (Lehengo Webgunea) -->
+    <div id="view-cards" class="fade-in">
+        <!-- Hero Section -->
+        <div class="bg-slate-900 text-white py-12 px-4 text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-4">Gizarte Ereduen Errealitatea</h2>
+            <p class="text-xl md:text-2xl text-slate-300 max-w-3xl mx-auto">
+                Zineman Estatu Batuak "munduko onenak" bezala saltzen dizkigute. <br />
+                <span class="text-yellow-400 font-bold">Baina zer diote datuek?</span>
+            </p>
+        </div>
+
+        <!-- Sub Navigation Tabs -->
+        <nav class="bg-white shadow-md overflow-x-auto py-2">
+            <div class="flex justify-center min-w-max p-2 space-x-2" id="tabs-container">
+                <!-- Injected by JS -->
+            </div>
+        </nav>
+
+        <main class="max-w-6xl mx-auto px-4 py-12">
+            <div class="text-center mb-10" id="section-title">
+                <!-- Title injected by JS -->
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8" id="comparison-cards">
+                <!-- Cards injected by JS -->
+            </div>
+
+            <div id="section-footer" class="mt-8"></div>
+        </main>
+
+        <!-- Other Models Grid -->
+        <section class="bg-white py-16 border-t mt-12">
+            <div class="max-w-6xl mx-auto px-4">
+                <h2 class="text-3xl font-bold text-center mb-12 flex items-center justify-center gap-3">
+                    <i data-lucide="globe" class="w-8 h-8 text-slate-400"></i>
+                    Beste Ereduak
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="other-countries-grid">
+                    <!-- Other countries injected by JS -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- VIEW 2: MATRIX DASHBOARD (Matrizea) -->
+    <div id="view-matrix" class="hidden fade-in p-4 md:p-8">
+        <div class="max-w-[1400px] mx-auto mb-8">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-6">
+                <div>
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-bold rounded uppercase tracking-wider">UD3. Gizartean Bizi Gara</span>
+                        <span class="text-slate-400 text-sm font-medium">&copy; Xanti</span>
+                    </div>
+                    <h2 class="text-3xl font-bold text-slate-900">Sektoreen Araberako Matrizea</h2>
+                    <p class="text-slate-500 mt-1">Herrialde guztien datu konparatiboak begiratu batean.</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <div class="min-w-[1200px]">
+                        <!-- Header Row -->
+                        <div class="grid grid-cols-[200px_repeat(7,1fr)] border-b border-slate-100">
+                            <div class="p-6 bg-slate-50 border-r border-slate-100 flex items-center text-xs font-bold text-slate-400 uppercase tracking-wider">
+                                Sektorea / Indikadorea
+                            </div>
+                            <div id="matrix-countries-header" class="contents"></div>
+                        </div>
+                        <!-- Data Rows -->
+                        <div id="matrix-data-rows"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer con leyenda y fuentes -->
+            <div class="mt-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-sm text-slate-400">
+                <div class="flex gap-6">
+                    <div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-green-500"></div> Egonkorra / Altua</div>
+                    <div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-yellow-500"></div> Ertaina / Aldakorra</div>
+                    <div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-red-500"></div> Baxua / Kritikoa</div>
+                </div>
+                <div class="text-xs md:text-sm italic">
+                    Iturriak: Munduko Bankua, OME, UNESCO eta World Prison Brief (2023-2024 datuak).
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL (Shared) -->
+    <div id="country-modal" class="fixed inset-0 bg-black bg-opacity-50 z-[100] hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto fade-in">
+            <div class="sticky top-0 bg-white p-6 border-b flex justify-between items-center z-10">
+                <div>
+                    <h3 id="modal-title" class="text-3xl font-bold text-slate-800">Herrialdea</h3>
+                    <span id="modal-tag" class="inline-block mt-2 px-3 py-1 rounded-full text-sm font-bold border">Etiketa</span>
+                </div>
+                <button onclick="closeModal()" class="p-2 hover:bg-slate-100 rounded-full transition">
+                    <i data-lucide="x" class="w-8 h-8 text-slate-500"></i>
+                </button>
+            </div>
+            <div class="p-6 grid md:grid-cols-2 gap-6" id="modal-content"></div>
+            <div class="p-6 border-t bg-slate-50 text-right">
+                <button onclick="closeModal()" class="px-6 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-700 font-semibold transition">Itxi</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- DATA SETS ---
+
+        // DATA FOR CARDS VIEW
+        const cardsComparisonData = {
+            osasuna: {
+                id: 'osasuna', title: "Osasun Sistema", icon: "heart-pulse",
+                usa: { title: "Aseguru Pribatuak", content: "Teknologia puntakoa, baina ordaindu ahal duenarentzat.", reality: "Ez da unibertsala. 'Medical Bankruptcy' arriskua." },
+                norway: { title: "Unibertsala (Publikoa)", content: "Estatuak estaltzen du ia dena.", benefit: "Segurtasuna: Gaixotzeak ez du pobretzea ekartzen." }
+            },
+            gobernua: {
+                id: 'gobernua', title: "Gobernua eta Politika", icon: "landmark",
+                usa: { title: "Errepublika Federala", content: "Bi alderdi nagusi. Lobby-en botere handia.", reality: "Diruak pisu handia du politikan." },
+                norway: { title: "Monarkia Parlamentarioa", content: "Adostasun politiko handia.", benefit: "Munduko demokraziarik osasuntsuena." }
+            },
+            ekonomia: {
+                id: 'ekonomia', title: "Ekonomia", icon: "dollar-sign",
+                usa: { title: "Kapitalismo Liberala", content: "Munduko ekonomiarik handiena.", reality: "Desberdintasun sozial basatia." },
+                norway: { title: "Ekonomia Mistoa", content: "Estatuaren kontrola petrolioan.", benefit: "Desberdintasun txikia." }
+            },
+            hezkuntza: {
+                id: 'hezkuntza', title: "Hezkuntza Sistema", icon: "book-open",
+                usa: { title: "Garestia", content: "Unibertsitate onenak, baina ordainpekoak.", reality: "30.000$-100.000$ zorra graduatzean." },
+                norway: { title: "Doakoa", content: "Kalitatezko hezkuntza guztientzat.", benefit: "Aukera berdintasuna." }
+            },
+            justizia: {
+                id: 'justizia', title: "Justizia", icon: "scale",
+                usa: { title: "Eredu Zigortzailea", content: "Zigor gogorrak. Heriotza-zigorra.", reality: "Presoen %20a mundu mailan. %70 berrerortzea." },
+                norway: { title: "Birgizarteratzailea", content: "Espetxe 'gizatiarrak'.", benefit: "%20 berrerortzea." }
+            }
+        };
+
+        const otherCountriesData = [
+            { id: "txina", name: "Txina", tag: "Estatu-Kapitalismoa", colorClass: "bg-red-50 border-red-500 text-red-700", summary: "Hazkunde ekonomiko basatia baina askatasun politikorik gabe.", details: { gobernua: "Alderdi bakarreko Errepublika Sozialista.", ekonomia: "'Munduko lantegia'.", hezkuntza: "Oso lehiakorra (Gaokao).", osasuna: "Mistoa. Ordainketa zuzena ohikoa.", justizia: "Oso zorrotza (%99 kondena)." } },
+            { id: "brasil", name: "Brasil", tag: "Gizarte Arraila", colorClass: "bg-green-50 border-green-500 text-green-700", summary: "Aberastasun natural handia, baina desberdintasuna.", details: { gobernua: "Errepublika Federala.", ekonomia: "Garapen bidean (Lehengaiak).", hezkuntza: "Unibertsitate onak vs Eskola kaskarrak.", osasuna: "SUS: Unibertsala baina baliabide gutxi.", justizia: "Espetxeak gainezka." } },
+            { id: "india", name: "India", tag: "Kontrastea", colorClass: "bg-orange-50 border-orange-500 text-orange-700", summary: "Teknologia puntakoa eta muturreko pobrezia.", details: { gobernua: "Demokrazia handiena.", ekonomia: "Zerbitzuak vs Nekazaritza.", hezkuntza: "IIT vs Analfabetismoa.", osasuna: "Pribatua nagusi.", justizia: "Sistema oso motela." } },
+            { id: "maroko", name: "Maroko", tag: "Tradizioa", colorClass: "bg-emerald-50 border-emerald-500 text-emerald-700", summary: "Garatzen ari den ekonomia, osasunean ordainketa zuzena.", details: { gobernua: "Monarkia Konstituzionala.", ekonomia: "Nekazaritza eta Turismoa.", hezkuntza: "Hobetzen.", osasuna: "'Out-of-pocket' ordainketa ohikoa.", justizia: "Kode zibila + Islamikoa." } },
+            { id: "australia", name: "Australia", tag: "Hibridoa", colorClass: "bg-blue-50 border-blue-500 text-blue-700", summary: "Bizi kalitate altua, Aborigenen egoera txarra.", details: { gobernua: "Monarkia Parlamentarioa.", ekonomia: "Oso garatua (Meatzaritza).", hezkuntza: "HECS sistema.", osasuna: "Medicare (Mistoa).", justizia: "Aborigenen espetxeratze altua." } }
+        ];
+
+        // DATA FOR MATRIX VIEW
+        const matrixCountries = [
+            { id: 'nor', name: 'Norbegia', flag: '🇳🇴', region: 'Europa' },
+            { id: 'usa', name: 'AEB', flag: '🇺🇸', region: 'Ipar Amerika' },
+            { id: 'chn', name: 'Txina', flag: '🇨🇳', region: 'Asia' },
+            { id: 'bra', name: 'Brasil', flag: '🇧🇷', region: 'Hego Amerika' },
+            { id: 'ind', name: 'India', flag: '🇮🇳', region: 'Asia' },
+            { id: 'mar', name: 'Maroko', flag: '🇲🇦', region: 'Afrika' },
+            { id: 'aus', name: 'Australia', flag: '🇦🇺', region: 'Ozeania' }
+        ];
+
+        const matrixRows = [
+            {
+                id: 'gov', label: 'Gobernua', icon: 'landmark', color: 'text-blue-600 bg-blue-50',
+                render: (cid) => {
+                    const d = { nor: {t:'Monarkia Parl.', s:'Egonkorra', c:'bg-green-100 text-green-700'}, usa: {t:'Err. Federala', s:'Polarizatua', c:'bg-yellow-100 text-yellow-700'}, chn: {t:'Alderdi Bakarra', s:'Autoritarioa', c:'bg-slate-100 text-slate-700'}, bra: {t:'Presid. Errep.', s:'Konplexua', c:'bg-orange-100 text-orange-700'}, ind: {t:'Demokrazia', s:'Aldakorra', c:'bg-yellow-100 text-yellow-700'}, mar: {t:'Monarkia Konst.', s:'Moderatu', c:'bg-blue-100 text-blue-700'}, aus: {t:'Monarkia Parl.', s:'Egonkorra', c:'bg-green-100 text-green-700'} }[cid];
+                    return `<div class="font-medium text-slate-800 text-sm mb-1">${d.t}</div><span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase ${d.c}">${d.s}</span>`;
+                }
+            },
+            {
+                id: 'jus', label: 'Justizia (Fidagarritasuna)', icon: 'scale', color: 'text-purple-600 bg-purple-50',
+                render: (cid) => {
+                    const s = { nor: 98, usa: 65, chn: 45, bra: 48, ind: 50, mar: 52, aus: 90 }[cid];
+                    const bc = s > 80 ? 'bg-green-500' : s > 50 ? 'bg-blue-500' : 'bg-orange-500';
+                    return `<div class="flex justify-between text-xs text-slate-500 mb-1"><span>Puntuazioa</span><span class="font-bold text-slate-700">${s}/100</span></div><div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden"><div class="h-full ${bc} progress-bar" style="width: ${s}%"></div></div>`;
+                }
+            },
+            {
+                id: 'eco', label: 'Ekonomia', icon: 'trending-up', color: 'text-green-600 bg-green-50',
+                render: (cid) => {
+                    const d = { nor: {t:'Altua', sub:'Olioa'}, usa: {t:'Oso Altua', sub:'Zerbitzuak'}, chn: {t:'Hazten', sub:'Manufaktura'}, bra: {t:'Ertaina', sub:'Lehengaiak'}, ind: {t:'Baxua', sub:'IT/Zerbitzuak'}, mar: {t:'Garapenean', sub:'Turismoa'}, aus: {t:'Altua', sub:'Meatzaritza'} }[cid];
+                    return `<div class="font-bold text-slate-800 text-lg">${d.t}</div><div class="text-xs text-slate-500 mt-1 bg-slate-100 inline-block px-1.5 py-0.5 rounded">${d.sub}</div>`;
+                }
+            },
+            {
+                id: 'edu', label: 'Hezkuntza', icon: 'book-open', color: 'text-orange-600 bg-orange-50',
+                render: (cid) => {
+                    const d = { nor: {r:'100%', t:'Doakoa'}, usa: {r:'99%', t:'Garestia'}, chn: {r:'97%', t:'Lehiakorra'}, bra: {r:'93%', t:'Desberdina'}, ind: {r:'77%', t:'Polarizatua'}, mar: {r:'74%', t:'Hobetzen'}, aus: {r:'99%', t:'Geroratua'} }[cid];
+                    return `<div class="text-2xl font-bold text-slate-800">${d.r}</div><div class="text-[10px] text-slate-400 font-medium uppercase tracking-wide leading-tight">Alfabetatzea</div><div class="text-xs font-semibold ${cid==='usa'?'text-red-500':'text-blue-500'} mt-1">${d.t}</div>`;
+                }
+            },
+            {
+                id: 'hea', label: 'Bizi Itxaropena', icon: 'heart', color: 'text-red-600 bg-red-50',
+                render: (cid) => {
+                    const d = { nor: 83, usa: 77, chn: 78, bra: 76, ind: 70, mar: 76, aus: 83 }[cid];
+                    return `<div class="flex items-center gap-1 font-bold text-slate-800"><i data-lucide="heart" class="w-3 h-3 text-red-500 fill-current"></i> ${d} urte</div>`;
+                }
+            }
+        ];
+
+
+        // --- LOGIC ---
+
+        let currentCardTab = 'osasuna';
+
+        function init() {
+            renderCardsTabs();
+            renderComparisonCards(currentCardTab);
+            renderOtherCountriesGrid();
+            renderMatrix();
+            lucide.createIcons();
+        }
+
+        // 1. SWITCH MAIN VIEW
+        window.switchMainView = function(view) {
+            document.querySelectorAll('.main-tab').forEach(b => b.classList.remove('active', 'text-blue-600', 'border-blue-600'));
+            document.getElementById(`btn-view-${view}`).classList.add('active', 'text-blue-600', 'border-blue-600');
+            
+            if(view === 'cards') {
+                document.getElementById('view-cards').classList.remove('hidden');
+                document.getElementById('view-matrix').classList.add('hidden');
+            } else {
+                document.getElementById('view-cards').classList.add('hidden');
+                document.getElementById('view-matrix').classList.remove('hidden');
+            }
+        };
+
+        // 2. CARDS VIEW LOGIC
+        function renderCardsTabs() {
+            document.getElementById('tabs-container').innerHTML = Object.keys(cardsComparisonData).map(key => {
+                const data = cardsComparisonData[key];
+                const isActive = key === currentCardTab;
+                return `<button onclick="switchCardTab('${key}')" class="tab-btn ${isActive ? 'active bg-blue-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'} flex items-center space-x-2 px-6 py-3 rounded-lg transition-all duration-200 font-semibold whitespace-nowrap"><i data-lucide="${data.icon}" class="w-5 h-5"></i><span>${data.title}</span></button>`;
+            }).join('');
+            lucide.createIcons();
+        }
+
+        window.switchCardTab = function(key) {
+            currentCardTab = key;
+            renderCardsTabs();
+            const container = document.getElementById('comparison-cards');
+            container.style.opacity = '0';
+            setTimeout(() => {
+                renderComparisonCards(key);
+                container.style.opacity = '1';
+                container.classList.add('fade-in');
+            }, 200);
+        };
+
+        function renderComparisonCards(key) {
+            const data = cardsComparisonData[key];
+            document.getElementById('section-title').innerHTML = `<h2 class="text-3xl font-bold flex items-center justify-center gap-3 text-slate-800"><i data-lucide="${data.icon}" class="w-8 h-8 text-slate-800"></i> ${data.title}</h2><p class="text-slate-500 mt-2">Bi eredu kontrajarri aurrez aurre</p>`;
+            
+            document.getElementById('comparison-cards').innerHTML = `
+                <div class="bg-white rounded-2xl shadow-xl border-t-8 border-red-500 overflow-hidden transform transition hover:shadow-2xl">
+                    <div class="bg-slate-100 p-6 border-b flex justify-between items-center"><h3 class="text-2xl font-bold text-slate-800">🇺🇸 Estatu Batuak</h3><span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Eredu Liberala</span></div>
+                    <div class="p-8"><h4 class="text-xl font-semibold text-red-600 mb-2">${data.usa.title}</h4><p class="text-slate-600 mb-6 text-lg">${data.usa.content}</p><div class="bg-red-50 p-4 rounded-xl border border-red-100"><div class="flex items-start gap-3"><i data-lucide="alert-triangle" class="w-6 h-6 text-red-500 flex-shrink-0 mt-1"></i><div><h5 class="font-bold text-red-800 text-sm uppercase mb-1">Errealitate gordina</h5><p class="text-red-700 text-sm leading-relaxed italic">"${data.usa.reality}"</p></div></div></div></div>
+                </div>
+                <div class="bg-white rounded-2xl shadow-xl border-t-8 border-blue-500 overflow-hidden transform transition hover:shadow-2xl">
+                    <div class="bg-slate-100 p-6 border-b flex justify-between items-center"><h3 class="text-2xl font-bold text-slate-800">🇳🇴 Norbegia</h3><span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Ongizate Estatua</span></div>
+                    <div class="p-8"><h4 class="text-xl font-semibold text-blue-600 mb-2">${data.norway.title}</h4><p class="text-slate-600 mb-6 text-lg">${data.norway.content}</p><div class="bg-blue-50 p-4 rounded-xl border border-blue-100"><div class="flex items-start gap-3"><i data-lucide="check-circle" class="w-6 h-6 text-blue-500 flex-shrink-0 mt-1"></i><div><h5 class="font-bold text-blue-800 text-sm uppercase mb-1">Abantaila nagusia</h5><p class="text-blue-700 text-sm leading-relaxed">"${data.norway.benefit}"</p></div></div></div></div>
+                </div>
+            `;
+            
+            // Footer text
+            let footerHtml = '';
+            if(key === 'hezkuntza') footerHtml = `<div class="bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-r-lg shadow-sm"><p class="text-yellow-800 font-medium italic text-lg text-center">"AEBn ikasle mailegua 'etxerik gabeko hipoteka' bat da. Norbegian, ikastea eskubide bat da, ez negozio bat."</p></div>`;
+            if(key === 'justizia') footerHtml = `<div class="bg-slate-800 text-white p-6 rounded-lg text-center shadow-lg"><p class="font-mono text-lg">Datua: AEBk munduko biztanleen %4 du, baina munduko presoen %20.<br/>Norbegian berrerortze tasa %20koa da; AEBn %70ekoa. Zein da eraginkorragoa?</p></div>`;
+            document.getElementById('section-footer').innerHTML = footerHtml;
+            lucide.createIcons();
+        }
+
+        function renderOtherCountriesGrid() {
+            document.getElementById('other-countries-grid').innerHTML = otherCountriesData.map(c => `
+                <div class="p-6 rounded-xl border-l-4 shadow-sm hover:shadow-lg transition-all bg-white ${c.colorClass.replace('text-', 'border-')} flex flex-col h-full">
+                    <div class="flex justify-between items-start mb-3"><h3 class="text-xl font-bold text-slate-800">${c.name}</h3><i data-lucide="info" class="w-5 h-5 text-slate-400"></i></div>
+                    <span class="inline-block self-start px-2 py-1 rounded text-xs font-bold ${c.colorClass} mb-3 bg-opacity-20">${c.tag}</span>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">${c.summary}</p>
+                    <button onclick="openModal('${c.id}')" class="w-full py-2 rounded-lg border-2 border-slate-200 hover:border-slate-400 hover:bg-slate-50 text-slate-600 font-semibold transition-colors flex items-center justify-center gap-2 group">Ikusi Xehetasunak <i data-lucide="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i></button>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        // 3. MATRIX VIEW LOGIC
+        function renderMatrix() {
+            document.getElementById('matrix-countries-header').innerHTML = matrixCountries.map(c => `
+                <div class="p-6 flex flex-col items-start min-w-[140px] hover:bg-slate-50 transition-colors">
+                    <div class="text-2xl mb-2">${c.flag}</div>
+                    <div class="font-bold text-slate-900 leading-tight">${c.name}</div>
+                    <div class="text-xs text-slate-400 font-medium">${c.region}</div>
+                </div>
+            `).join('');
+
+            document.getElementById('matrix-data-rows').innerHTML = matrixRows.map(row => `
+                <div class="grid grid-cols-[200px_repeat(7,1fr)] border-b border-slate-100 hover:bg-slate-50/50 transition-colors group">
+                    <div class="p-6 border-r border-slate-100 flex items-center gap-3 bg-white group-hover:bg-slate-50/50">
+                        <div class="p-2 rounded-lg ${row.color}"><i data-lucide="${row.icon}" class="w-5 h-5"></i></div>
+                        <span class="font-semibold text-slate-700 text-sm">${row.label}</span>
+                    </div>
+                    ${matrixCountries.map(c => `<div class="p-6 flex flex-col justify-center border-r border-dashed border-slate-100 last:border-0 min-w-[140px]">${row.render(c.id)}</div>`).join('')}
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        // 4. MODAL LOGIC
+        window.openModal = function(id) {
+            const c = otherCountriesData.find(x => x.id === id);
+            if(!c) return;
+            document.getElementById('modal-title').innerText = c.name;
+            const tag = document.getElementById('modal-tag');
+            tag.innerText = c.tag;
+            tag.className = `inline-block mt-2 px-3 py-1 rounded-full text-sm font-bold border ${c.colorClass} bg-opacity-20`;
+            
+            document.getElementById('modal-content').innerHTML = `
+                <div class="space-y-4">
+                    <div class="bg-slate-50 p-4 rounded-lg"><div class="flex items-center gap-2 mb-2 text-slate-800 font-bold"><i data-lucide="landmark" class="w-5 h-5"></i> Gobernua</div><p class="text-slate-600 text-sm">${c.details.gobernua}</p></div>
+                    <div class="bg-slate-50 p-4 rounded-lg"><div class="flex items-center gap-2 mb-2 text-slate-800 font-bold"><i data-lucide="dollar-sign" class="w-5 h-5"></i> Ekonomia</div><p class="text-slate-600 text-sm">${c.details.ekonomia}</p></div>
+                    <div class="bg-slate-50 p-4 rounded-lg"><div class="flex items-center gap-2 mb-2 text-slate-800 font-bold"><i data-lucide="book-open" class="w-5 h-5"></i> Hezkuntza</div><p class="text-slate-600 text-sm">${c.details.hezkuntza}</p></div>
+                </div>
+                <div class="space-y-4">
+                    <div class="bg-slate-50 p-4 rounded-lg"><div class="flex items-center gap-2 mb-2 text-slate-800 font-bold"><i data-lucide="heart-pulse" class="w-5 h-5"></i> Osasuna</div><p class="text-slate-600 text-sm">${c.details.osasuna}</p></div>
+                    <div class="bg-slate-50 p-4 rounded-lg"><div class="flex items-center gap-2 mb-2 text-slate-800 font-bold"><i data-lucide="scale" class="w-5 h-5"></i> Justizia</div><p class="text-slate-600 text-sm">${c.details.justizia}</p></div>
+                </div>
+            `;
+            document.getElementById('country-modal').classList.remove('hidden');
+            lucide.createIcons();
+        };
+
+        window.closeModal = function() { document.getElementById('country-modal').classList.add('hidden'); };
+        document.getElementById('country-modal').addEventListener('click', function(e) { if(e.target === this) closeModal(); });
+
+        window.onload = init;
+    </script>
+</body>
+</html>
